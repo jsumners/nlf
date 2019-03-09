@@ -13,7 +13,7 @@ const input = [mod]
 const expected =
   '"name","version","directory","repository","summary","from package.json",' +
   '"from license","from readme"\n' +
-  '"test","1.0.0","/dir/test","(none)","Apache;MIT","Apache;MIT","Apache;MIT",""'
+  '"test","1.0.0","/dir/test","(none)","Apache;MIT","Apache","MIT",""'
 
 let ready = false
 tap.beforeEach(done => {

@@ -13,16 +13,16 @@ const input = [mod]
 
 const expected =
   'test@1.0.0 [license(s): Apache, MIT]\n' +
-  '├── package.json:  Apache, MIT\n' +
-  '├── license files: Apache, MIT\n' +
-  '└── readme files: Apache, MIT\n\n' +
+  '├── package.json:  Apache\n' +
+  '├── license files: MIT\n' +
+  '└── readme files: MIT\n\n' +
   'LICENSES: Apache, MIT\n'
 
 const expectedWithDatailSummary =
   'test@1.0.0 [license(s): Apache, MIT]\n' +
-  '├── package.json:  Apache, MIT\n' +
-  '├── license files: Apache, MIT\n' +
-  '└── readme files: Apache, MIT\n\n' +
+  '├── package.json:  Apache\n' +
+  '├── license files: MIT\n' +
+  '└── readme files: MIT\n\n' +
   'LICENSES:\n' +
   '├─┬ Apache\n' +
   '│ └── test@1.0.0\n' +
