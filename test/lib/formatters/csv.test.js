@@ -2,17 +2,24 @@
 
 const { test } = require('tap')
 const path = require('path')
-const { csvFormatter: csvFormat, Module, PackageSource, FileSource } = require('../../..')
+const {
+  csvFormatter: csvFormat,
+  Module,
+  PackageSource,
+  FileSource
+} = require('../../..')
 
 const mod = new Module('test@1.0.0', 'test', '1.0.0', '/dir/test')
 mod.licenseSources.package.add(new PackageSource('Apache'))
-mod.licenseSources.license.add(new FileSource(path.join(__dirname, '..', '..', 'fixtures', 'MIT')))
+mod.licenseSources.license.add(
+  new FileSource(path.join(__dirname, '..', '..', 'fixtures', 'MIT'))
+)
 const input = [mod]
 
 const expected =
-  'name,version,directory,repository,summary,from package.json,' +
-  'from license,from readme\n' +
-  'test,1.0.0,/dir/test,(none),Apache;MIT,Apache,MIT,'
+  '"name","version","directory","repository","summary","from package.json",' +
+  '"from license","from readme"\n' +
+  '"test","1.0.0","/dir/test","(none)","Apache;MIT","Apache","MIT",""'
 
 test('throws without callback', t => {
   t.plan(2)
