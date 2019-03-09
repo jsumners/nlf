@@ -2,14 +2,10 @@
 
 const tap = require('tap')
 
-const { Module, FileSource, PackageSource } = require('../..')
-const fakeMitFile = new FileSource('/dir/myMitFile')
-const fakeApacheFile = new FileSource('/dir/myApacheFile')
-const fakeGplFile = new FileSource('/dir/myGplFile')
-
-fakeMitFile.text = 'blah MIT blah'
-fakeApacheFile.text = 'blah The Apache License blah'
-fakeGplFile.text = 'blah GPL blah'
+const packageSource = require('../../lib/package-source')
+const { Module } = require('../..')
+const fakeMitFile = { filePath: '/dir/myMitFile', names: ['MIT'] }
+const fakeApacheFile = { filePath: '/dir/myApacheFile', names: ['Apache'] }
 
 tap.test('constructor', async ({ test }) => {
   test('should be a function', async t => {
@@ -25,7 +21,13 @@ tap.test('constructor', async ({ test }) => {
   })
 
   test('returns an object with basic parameters', async t => {
-    const mod = new Module('my-module@1.0.0', undefined, undefined, '/my/dir', undefined)
+    const mod = new Module(
+      'my-module@1.0.0',
+      undefined,
+      undefined,
+      '/my/dir',
+      undefined
+    )
     t.type(mod, Object)
   })
 
@@ -95,14 +97,14 @@ tap.test('summary method', async ({ test }) => {
 
   test('single package should appear in summary', async t => {
     const mod = new Module('my-module', 'my-module', '1.0.0', '/my/dir')
-    mod.licenseSources.package.sources.push(new PackageSource('MIT'))
+    mod.licenseSources.package.sources.push(packageSource('MIT'))
     t.deepEqual(mod.summary(), ['MIT'])
   })
 
   test('multiple modules appear alphabetically', async t => {
     const mod = new Module('my-module', 'my-module', '1.0.0', '/my/dir')
-    mod.licenseSources.package.sources.push(new PackageSource('MIT'))
-    mod.licenseSources.package.sources.push(new PackageSource('Apache'))
+    mod.licenseSources.package.sources.push(packageSource('MIT'))
+    mod.licenseSources.package.sources.push(packageSource('Apache'))
     t.deepEqual(mod.summary(), ['Apache', 'MIT'])
   })
 
@@ -134,9 +136,9 @@ tap.test('summary method', async ({ test }) => {
 
   test('duplicate licenses from different sources are omitted', async t => {
     const mod = new Module('my-module', 'my-module', '1.0.0', '/my/dir')
-    mod.licenseSources.package.sources.push(new PackageSource('MIT'))
-    mod.licenseSources.package.sources.push(new PackageSource('Apache'))
-    mod.licenseSources.package.sources.push(new PackageSource('GPL'))
+    mod.licenseSources.package.sources.push(packageSource('MIT'))
+    mod.licenseSources.package.sources.push(packageSource('Apache'))
+    mod.licenseSources.package.sources.push(packageSource('GPL'))
     mod.licenseSources.license.sources.push(fakeMitFile)
     mod.licenseSources.license.sources.push(fakeApacheFile)
     mod.licenseSources.readme.sources.push(fakeMitFile)

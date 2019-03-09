@@ -1,24 +1,24 @@
 'use strict'
 
 const { test } = require('tap')
-const { PackageSource } = require('../..')
+const packageSource = require('../../lib/package-source')
 
 test('is a function', async t => {
-  t.type(PackageSource, Function)
+  t.type(packageSource, Function)
 })
 
 test('throws with no argument', async t => {
-  t.throws(() => new PackageSource())
+  t.throws(() => packageSource())
 })
 
 test('creates an initialized object with a string parameter', async t => {
-  const source = new PackageSource('MIT')
+  const source = packageSource('MIT')
   t.is(source.license, 'MIT')
   t.is(source.url, '(none)')
 })
 
 test('creates an initialized object with an object parameter', async t => {
-  const source = new PackageSource({
+  const source = packageSource({
     type: 'MIT',
     url: 'https://opensource.org/licenses/MIT'
   })
@@ -27,8 +27,8 @@ test('creates an initialized object with an object parameter', async t => {
 })
 
 test('instance.names should return array log licenses', async t => {
-  const source = new PackageSource('MIT')
-  const licenses = source.names()
+  const source = packageSource('MIT')
+  const licenses = source.names
   t.type(licenses, Array)
   t.is(licenses.length, 1)
   t.deepEqual(licenses, ['MIT'])

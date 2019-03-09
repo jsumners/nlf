@@ -1,47 +1,35 @@
 'use strict'
 
 const tap = require('tap')
-const { FileSource } = require('../..')
+const fileSource = require('../../lib/file-source')
 const path = require('path')
-const fs = require('fs')
-const mitFile = fs.readFileSync(path.join(__dirname, '..', 'fixtures', 'MIT'), 'utf-8')
+const mitPath = path.join(__dirname, '..', 'fixtures', 'MIT')
 
 tap.test('should be a function', async t => {
-  t.type(FileSource, Function)
+  t.type(fileSource, Function)
 })
 
 tap.test('throws with no path', async t => {
-  t.throws(() => new FileSource())
+  t.throws(() => fileSource())
 })
 
-tap.test('creates an initialized object with a path', async t => {
-  const source = new FileSource('/dir/filename')
-  t.is(source.filePath, '/dir/filename')
-  t.is(source.text, '')
-  t.deepEqual(source.names(), [])
+tap.test('throws with no callback', async t => {
+  t.throws(() => fileSource('/dir/filename'))
 })
 
-tap.test('reading MIT file', async ({ test, beforeEach }) => {
-  let source
-  beforeEach(done => {
-    source = new FileSource(path.join(__dirname, '..', 'fixtures', 'MIT'))
-    source.read(done)
-  })
-
-  test('contains text of the license file', async t => {
-    t.is(source.text, mitFile)
-  })
-
-  test('detects only MIT license', async t => {
-    const licenses = source.names()
-    t.deepEqual(licenses, ['MIT'])
+tap.test('creates an initialized object with a path', t => {
+  fileSource(mitPath, (err, source) => {
+    t.error(err)
+    t.is(source.filePath, mitPath)
+    t.deepEqual(source.names, ['MIT'])
+    t.end()
   })
 })
 
 tap.test('returns error for bad filename', t => {
-  const source = new FileSource(path.join(__dirname, '..', 'fixtures', 'CATS'))
-  source.read(err => {
+  fileSource(path.join(__dirname, '..', 'fixtures', 'CATS'), (err, source) => {
     t.match(err, /ENOENT: no such file or directory/)
+    t.ok(source)
     t.end()
   })
 })

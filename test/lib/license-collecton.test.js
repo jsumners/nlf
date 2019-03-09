@@ -1,7 +1,8 @@
 'use strict'
 
 const { test } = require('tap')
-const { LicenseCollection, PackageSource } = require('../..')
+const packageSource = require('../../lib/package-source')
+const { LicenseCollection } = require('../..')
 
 test('should be a function', async t => {
   t.type(LicenseCollection, Function)
@@ -31,6 +32,6 @@ test('summary returns an empty array', async t => {
 
 test('summary returns license names', async t => {
   const collection = new LicenseCollection()
-  collection.add(new PackageSource('MIT'))
+  collection.add(packageSource('MIT'))
   t.deepEqual(collection.summary(), ['MIT'])
 })
