@@ -41,6 +41,8 @@
   ],
   "scripts": {
     "pretest": "standard index.js 'lib/**/*.js' 'test/**/*.test.js' | snazzy",
-    "test": "tap --no-esm -J 'test/**/*.test.js'"
+    "test": "tap --no-esm -J 'test/**/*.test.js'",
+    "test:cov": "tap --no-esm --cov 'test/**/*.test.js'",
+    "test:cov:html": "tap --no-esm --cov --coverage-report=html 'test/**/*.test.js'"
   }
 }
